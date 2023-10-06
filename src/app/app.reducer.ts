@@ -1,6 +1,4 @@
-
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
 
 const initialState = {
   status: "idle" as RequestStatusType,
@@ -27,9 +25,5 @@ const slice = createSlice({
   },
 });
 
-
-
-
 export const appReducer = slice.reducer;
 export const appActions = slice.actions;
-
