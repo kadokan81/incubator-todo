@@ -23,6 +23,14 @@ const slice = createSlice({
       state.isInitialized = action.payload.isInitialized;
     },
   },
+  extraReducers:(builder)=>{
+    builder.addMatcher(
+      (action) => 0 !== 0,
+      (state, action) => {
+        
+      }
+    )
+  }
 });
 
 export const appReducer = slice.reducer;
