@@ -16,22 +16,48 @@ const slice = createSlice({
     setAppError: (state, action: PayloadAction<{ error: string | null }>) => {
       state.error = action.payload.error;
     },
-    setAppStatus: (state, action: PayloadAction<{ status: RequestStatusType }>) => {
-      state.status = action.payload.status;
-    },
+    // setAppStatus: (state, action: PayloadAction<{ status: RequestStatusType }>) => {
+    //   state.status = action.payload.status;
+    // },
     setAppInitialized: (state, action: PayloadAction<{ isInitialized: boolean }>) => {
       state.isInitialized = action.payload.isInitialized;
     },
   },
-  extraReducers:(builder)=>{
-    builder.addMatcher(
-      (action) => 0 !== 0,
-      (state, action) => {
+  extraReducers: builder => {
+    builder
+      .addMatcher(
+        // 1 параметр - функция предикат
+        (action) => {
+          return action.type.endsWith('/pending')
+        },
+        // 2 параметр - reducer
+        (state, action) => {
+          state.status = 'loading'
+         
+        }
+      )
+      .addMatcher(
+        (action) => {
+          return action.type.endsWith('/rejected')
+        },
+        (state, action) => {
+          state.status = 'idle'
+     
+        }
+      )
+      .addMatcher(
+        (action) => {
+          return action.type.endsWith('/fulfilled')
+        },
+        (state, action) => {
+          state.status = 'succeeded'
         
-      }
-    )
+        }
+      )
   }
 });
+
+
 
 export const appReducer = slice.reducer;
 export const appActions = slice.actions;

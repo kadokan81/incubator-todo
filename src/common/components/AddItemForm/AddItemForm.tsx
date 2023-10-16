@@ -1,9 +1,10 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 import { IconButton, TextField } from "@mui/material";
 import { AddBox } from "@mui/icons-material";
+import { TaskType, TodolistType } from "features/TodolistsList/todolists.api";
 
 type AddItemFormPropsType = {
-  addItem: (title: string) => void;
+  addItem: (title: string) => Promise<{ todolist: TodolistType } | { task: TaskType }>;
   disabled?: boolean;
 };
 
@@ -13,8 +14,14 @@ export const AddItemForm = React.memo(function ({ addItem, disabled = false }: A
 
   const addItemHandler = () => {
     if (title.trim() !== "") {
-      addItem(title);
-      setTitle("");
+      addItem(title)
+        .then((res) => {
+          setTitle("");
+        })
+        .catch((err) => {
+          setError("Error ❌");
+          setTitle("");
+        })
     } else {
       setError("Title is required");
     }

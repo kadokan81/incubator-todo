@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
-import {  todolistsThunks } from "features/TodolistsList/todolists.reducer";
+import { todolistsThunks } from "features/TodolistsList/todolists.reducer";
 import { Grid, Paper } from "@mui/material";
 import { AddItemForm } from "common/components";
 import { Todolist } from "./Todolist/Todolist";
@@ -17,8 +17,6 @@ export const TodolistsList = () => {
 
   const { addTodolist: addTodolistThunk, fetchTodolists } = useActions(todolistsThunks);
 
-
-
   useEffect(() => {
     if (!isLoggedIn) {
       return;
@@ -26,11 +24,7 @@ export const TodolistsList = () => {
     fetchTodolists();
   }, []);
 
-
-
-  const addTodolistCallback = useCallback((title: string) => {
-    addTodolistThunk(title);
-  }, []);
+  const addTodolistCallback = useCallback((title: string) => addTodolistThunk(title).unwrap(), []);
 
   if (!isLoggedIn) {
     return <Navigate to={"/login"} />;
@@ -48,10 +42,7 @@ export const TodolistsList = () => {
           return (
             <Grid item key={tl.id}>
               <Paper style={{ padding: "10px" }}>
-                <Todolist
-                  todolist={tl}
-                  tasks={allTodolistTasks}
-                />
+                <Todolist todolist={tl} tasks={allTodolistTasks} />
               </Paper>
             </Grid>
           );
